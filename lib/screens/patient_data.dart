@@ -1,18 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:monitor/screens/detail_bpm.dart';
-import 'package:monitor/screens/details_oxygen.dart';
+import '../models/paciente.dart';
+import 'detail_bpm.dart';
+import 'details_oxygen.dart';
 import '../utils/const.dart';
 import '../widgets/card_items.dart';
 import '../widgets/card_main.dart';
 import '../widgets/custom_clipper.dart';
 
-class HomeScreen extends StatefulWidget {
+class DatosDelPaciente extends StatefulWidget {
+  final Paciente paciente;
+
+  const DatosDelPaciente({Key key, this.paciente}) : super(key: key);
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _DatosDelPacienteState createState() => _DatosDelPacienteState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DatosDelPacienteState extends State<DatosDelPaciente> {
   @override
   void initState() {
     super.initState();
