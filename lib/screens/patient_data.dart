@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:monitor/widgets/card_personal_data.dart';
 import '../models/paciente.dart';
 import 'detail_bpm.dart';
 import 'details_oxygen.dart';
 import '../utils/const.dart';
-import '../widgets/card_items.dart';
 import '../widgets/card_main.dart';
 import '../widgets/custom_clipper.dart';
 
@@ -17,10 +17,17 @@ class DatosDelPaciente extends StatefulWidget {
 }
 
 class _DatosDelPacienteState extends State<DatosDelPaciente> {
+  Paciente paciente;
+
   @override
   void initState() {
     super.initState();
-    //TODO: Cargar los datos y mediciones del paciente
+    paciente = widget.paciente;
+    cargarLecturas();
+  }
+
+  Future<void> cargarLecturas() async {
+    //TODO: Llamar a la API que devuelva la lista de Lecturas del paciente y asignar los valores correspondientes
   }
 
   @override
@@ -69,7 +76,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                     ),
                     IconButton(
                       icon: Icon(Icons.refresh_rounded),
-                      onPressed: () {},
+                      onPressed: () => cargarLecturas(),
                       iconSize: 30,
                     ),
                   ],
@@ -122,25 +129,24 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: <Widget>[
-                      CardItems(
-                        image: Image.asset(
-                          'assets/icons/Walking.png',
-                        ),
-                        title: "Walking",
-                        value: "750",
-                        unit: "steps",
-                        color: Constants.lightYellow,
-                        progress: 30,
+                      CardPersonalData(
+                        title: "Nombre",
+                        icon: Icon(Icons.contact_page),
+                        color: Colors.cyan,
+                        detail:
+                            '${paciente.nombre} ${paciente.apellidoPaterno} ${paciente.apellidoMaterno}',
                       ),
-                      CardItems(
-                        image: Image.asset(
-                          'assets/icons/Swimming.png',
-                        ),
-                        title: "Swimming",
-                        value: "30",
-                        unit: "mins",
-                        color: Constants.lightBlue,
-                        progress: 0,
+                      CardPersonalData(
+                        title: "Telefono",
+                        icon: Icon(Icons.phone),
+                        color: Colors.cyan,
+                        detail: paciente.telefono.toString(),
+                      ),
+                      CardPersonalData(
+                        title: "Direccion",
+                        icon: Icon(Icons.map),
+                        color: Colors.cyan,
+                        detail: "paciente.direccion",
                       ),
                     ],
                   ),

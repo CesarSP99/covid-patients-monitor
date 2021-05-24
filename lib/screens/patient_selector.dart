@@ -17,27 +17,33 @@ class _PatientSelectorState extends State<PatientSelector> {
   @override
   void initState() {
     super.initState();
+    cargarPacientes();
+  }
+
+  Future<void> cargarPacientes() async {
     //TODO: Cargar los pacientes
-    listaDePacientes = [
-      Paciente(
-        nombre: 'Cesar',
-        apellidoPaterno: 'Salazar',
-        apellidoMaterno: 'Pereira',
-        telefono: 678789,
-      ),
-      Paciente(
-        nombre: 'Sebastian',
-        apellidoPaterno: 'M',
-        apellidoMaterno: 'Y',
-        telefono: 680329,
-      ),
-      Paciente(
-        nombre: 'Laura',
-        apellidoPaterno: 'M',
-        apellidoMaterno: 'K',
-        telefono: 837939,
-      )
-    ];
+    setState(() {
+      listaDePacientes = [
+        Paciente(
+          nombre: 'Cesar',
+          apellidoPaterno: 'Salazar',
+          apellidoMaterno: 'Pereira',
+          telefono: 678789,
+        ),
+        Paciente(
+          nombre: 'Sebastian',
+          apellidoPaterno: 'M',
+          apellidoMaterno: 'Y',
+          telefono: 680329,
+        ),
+        Paciente(
+          nombre: 'Laura',
+          apellidoPaterno: 'M',
+          apellidoMaterno: 'K',
+          telefono: 837939,
+        )
+      ];
+    });
   }
 
   @override
@@ -86,7 +92,7 @@ class _PatientSelectorState extends State<PatientSelector> {
                     ),
                     IconButton(
                       icon: Icon(Icons.refresh_rounded),
-                      onPressed: () {},
+                      onPressed: () => cargarPacientes(),
                       iconSize: 30,
                     ),
                   ],
@@ -96,7 +102,7 @@ class _PatientSelectorState extends State<PatientSelector> {
 
                 //Lista de pacientes
 
-                Expanded(
+                Container(
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: listaDePacientes.length,

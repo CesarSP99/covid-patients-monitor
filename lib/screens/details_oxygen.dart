@@ -5,7 +5,12 @@ import '../widgets/custom_clipper.dart';
 import '../widgets/grid_item.dart';
 import '../widgets/progress_vertical.dart';
 
-class DetailsSpO2Screen extends StatelessWidget {
+class DetailsSpO2Screen extends StatefulWidget {
+  @override
+  _DetailsSpO2ScreenState createState() => _DetailsSpO2ScreenState();
+}
+
+class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;

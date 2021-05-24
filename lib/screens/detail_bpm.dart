@@ -5,7 +5,12 @@ import '../widgets/custom_clipper.dart';
 import '../widgets/grid_item.dart';
 import '../widgets/progress_vertical.dart';
 
-class DetailsBPMScreen extends StatelessWidget {
+class DetailsBPMScreen extends StatefulWidget {
+  @override
+  _DetailsBPMScreenState createState() => _DetailsBPMScreenState();
+}
+
+class _DetailsBPMScreenState extends State<DetailsBPMScreen> {
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -253,7 +258,7 @@ class DetailsBPMScreen extends StatelessWidget {
                           return GridItem(
                               status: "BPM Promedio",
                               time: "",
-                              value: "76",
+                              value: "--",
                               unit: "bpm",
                               color: Constants.darkGreen,
                               image: null,
@@ -261,13 +266,14 @@ class DetailsBPMScreen extends StatelessWidget {
                           break;
                         case 1:
                           return GridItem(
-                              status: "Prediagnóstico",
-                              time: "",
-                              value: "82",
-                              unit: "avg bpm",
-                              color: Constants.darkOrange,
-                              image: AssetImage("assets/icons/Heart.png"),
-                              remarks: "Fit");
+                            status: "Prediagnóstico",
+                            time: "",
+                            value: "",
+                            unit: "",
+                            color: Constants.darkOrange,
+                            image: AssetImage("assets/icons/Heart.png"),
+                            remarks: "Sano",
+                          );
                           break;
                         default:
                           return GridItem(
