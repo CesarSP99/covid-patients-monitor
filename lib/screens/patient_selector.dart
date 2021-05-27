@@ -25,23 +25,33 @@ class _PatientSelectorState extends State<PatientSelector> {
     setState(() {
       listaDePacientes = [
         Paciente(
-          nombre: 'Cesar',
-          apellidoPaterno: 'Salazar',
-          apellidoMaterno: 'Pereira',
-          telefono: 678789,
+          nombre: 'Laura',
+          apellidoPaterno: 'Martínez',
+          apellidoMaterno: 'Klein',
+          telefono: 7777777,
+          direccion: "Santa Cruz",
         ),
         Paciente(
           nombre: 'Sebastian',
-          apellidoPaterno: 'M',
-          apellidoMaterno: 'Y',
-          telefono: 680329,
+          apellidoPaterno: 'Morales',
+          apellidoMaterno: 'Yabeta',
+          telefono: 7777777,
+          direccion: "Santa Cruz",
         ),
         Paciente(
-          nombre: 'Laura',
-          apellidoPaterno: 'M',
-          apellidoMaterno: 'K',
-          telefono: 837939,
-        )
+          nombre: 'Cesar',
+          apellidoPaterno: 'Salazar',
+          apellidoMaterno: 'Pereira',
+          telefono: 7777777,
+          direccion: "Santa Cruz",
+        ),
+        Paciente(
+          nombre: 'Diego',
+          apellidoPaterno: 'Vaca',
+          apellidoMaterno: 'Safar',
+          telefono: 7777777,
+          direccion: "Santa Cruz",
+        ),
       ];
     });
   }
@@ -78,7 +88,7 @@ class _PatientSelectorState extends State<PatientSelector> {
             padding: EdgeInsets.all(Constants.paddingSide),
             child: ListView(
               children: <Widget>[
-                // Header - Greetings and Avatar
+                // Header
                 Row(
                   children: <Widget>[
                     Expanded(

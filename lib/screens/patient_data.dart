@@ -18,11 +18,15 @@ class DatosDelPaciente extends StatefulWidget {
 
 class _DatosDelPacienteState extends State<DatosDelPaciente> {
   Paciente paciente;
+  String bpm;
+  String spo2;
 
   @override
   void initState() {
     super.initState();
     paciente = widget.paciente;
+    bpm = "--";
+    spo2 = "--";
     cargarLecturas();
   }
 
@@ -62,7 +66,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
             padding: EdgeInsets.all(Constants.paddingSide),
             child: ListView(
               children: <Widget>[
-                // Header - Greetings and Avatar
+                // Header
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -84,7 +88,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
 
                 SizedBox(height: 50),
 
-                // Main Cards - Heartbeat and Blood Pressure
+                // Main Cards
                 Container(
                   height: 140,
                   child: ListView(
@@ -93,7 +97,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                       CardMain(
                         image: AssetImage('assets/icons/heartbeat.png'),
                         title: "Ritmo\nCardiaco",
-                        value: "--",
+                        value: bpm,
                         unit: "bpm",
                         color: Constants.lightGreen,
                         detailsScreen: DetailsBPMScreen(),
@@ -101,7 +105,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                       CardMain(
                         image: AssetImage('assets/icons/blooddrop.png'),
                         title: "Saturación\nde Oxígeno",
-                        value: "--",
+                        value: spo2,
                         unit: "%",
                         color: Constants.lightYellow,
                         detailsScreen: DetailsSpO2Screen(),
@@ -112,7 +116,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
 
                 SizedBox(height: 50),
 
-                // Scheduled Activities
+                // DATOS PERSONALES
                 Text(
                   "DATOS PERSONALES",
                   style: TextStyle(
@@ -146,7 +150,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                         title: "Direccion",
                         icon: Icon(Icons.map),
                         color: Colors.cyan,
-                        detail: "paciente.direccion",
+                        detail: paciente.direccion,
                       ),
                     ],
                   ),
