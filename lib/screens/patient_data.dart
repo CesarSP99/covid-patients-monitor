@@ -138,13 +138,13 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                         icon: Icon(Icons.contact_page),
                         color: Colors.cyan,
                         detail:
-                            '${paciente.nombre} ${paciente.apellidoPaterno} ${paciente.apellidoMaterno}',
+                            '${paciente.nombre} ${paciente.apellidoPat} ${paciente.apellidoMat}',
                       ),
                       CardPersonalData(
                         title: "Telefono",
                         icon: Icon(Icons.phone),
                         color: Colors.cyan,
-                        detail: paciente.telefono.toString(),
+                        detail: paciente.telefono,
                       ),
                       CardPersonalData(
                         title: "Direccion",

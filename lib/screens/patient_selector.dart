@@ -26,30 +26,30 @@ class _PatientSelectorState extends State<PatientSelector> {
       listaDePacientes = [
         Paciente(
           nombre: 'Laura',
-          apellidoPaterno: 'Martínez',
-          apellidoMaterno: 'Klein',
-          telefono: 7777777,
+          apellidoPat: 'Martínez',
+          apellidoMat: 'Klein',
+          telefono: "7777777",
           direccion: "Santa Cruz",
         ),
         Paciente(
           nombre: 'Sebastian',
-          apellidoPaterno: 'Morales',
-          apellidoMaterno: 'Yabeta',
-          telefono: 7777777,
+          apellidoPat: 'Morales',
+          apellidoMat: 'Yabeta',
+          telefono: "7777777",
           direccion: "Santa Cruz",
         ),
         Paciente(
           nombre: 'Cesar',
-          apellidoPaterno: 'Salazar',
-          apellidoMaterno: 'Pereira',
-          telefono: 7777777,
+          apellidoPat: 'Salazar',
+          apellidoMat: 'Pereira',
+          telefono: "7777777",
           direccion: "Santa Cruz",
         ),
         Paciente(
           nombre: 'Diego',
-          apellidoPaterno: 'Vaca',
-          apellidoMaterno: 'Safar',
-          telefono: 7777777,
+          apellidoPat: 'Vaca',
+          apellidoMat: 'Safar',
+          telefono: "7777777",
           direccion: "Santa Cruz",
         ),
       ];
@@ -125,7 +125,7 @@ class _PatientSelectorState extends State<PatientSelector> {
                         elevation: 5,
                         child: ListTile(
                           title: Text(
-                              '${paciente.nombre} ${paciente.apellidoPaterno} ${paciente.apellidoMaterno}'),
+                              '${paciente.nombre} ${paciente.apellidoPat} ${paciente.apellidoMat}'),
                           subtitle: Text(paciente.telefono.toString()),
                           leading: CircleAvatar(
                             backgroundImage:

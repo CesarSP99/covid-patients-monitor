@@ -1,18 +1,43 @@
-import 'paciente.dart';
+import 'dart:convert';
+
+List<Lectura> lecturasFromJson(String str) =>
+    List<Lectura>.from(json.decode(str).map((x) => Lectura.fromJson(x)));
+
+String lecturasToJson(List<Lectura> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Lectura {
-  int idLectura;
-  DateTime fecha;
-  int ritmoCardiaco;
-  int saturacionOxigeno;
-  int idPaciente;
-  Paciente paciente;
   Lectura({
     this.idLectura,
-    this.fecha,
+    this.idPaciente,
     this.ritmoCardiaco,
     this.saturacionOxigeno,
-    this.idPaciente,
-    this.paciente,
+    this.fechaMedicion,
+    this.idPacienteNavigation,
   });
+
+  int idLectura;
+  int idPaciente;
+  int ritmoCardiaco;
+  int saturacionOxigeno;
+  DateTime fechaMedicion;
+  dynamic idPacienteNavigation;
+
+  factory Lectura.fromJson(Map<String, dynamic> json) => Lectura(
+        idLectura: json["idLectura"],
+        idPaciente: json["idPaciente"],
+        ritmoCardiaco: json["ritmoCardiaco"],
+        saturacionOxigeno: json["saturacionOxigeno"],
+        fechaMedicion: DateTime.parse(json["fechaMedicion"]),
+        idPacienteNavigation: json["idPacienteNavigation"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "idLectura": idLectura,
+        "idPaciente": idPaciente,
+        "ritmoCardiaco": ritmoCardiaco,
+        "saturacionOxigeno": saturacionOxigeno,
+        "fechaMedicion": fechaMedicion.toIso8601String(),
+        "idPacienteNavigation": idPacienteNavigation,
+      };
 }
