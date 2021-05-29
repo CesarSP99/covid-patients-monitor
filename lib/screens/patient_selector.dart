@@ -4,7 +4,6 @@ import 'package:monitor/models/paciente.dart';
 import 'package:monitor/screens/patient_data.dart';
 import '../utils/const.dart';
 import '../widgets/custom_clipper.dart';
-import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 
 class PatientSelector extends StatefulWidget {
@@ -92,9 +91,6 @@ class _PatientSelectorState extends State<PatientSelector> {
                     itemCount: listaDePacientes.length,
                     itemBuilder: (context, index) {
                       Paciente paciente = listaDePacientes[index];
-                      var baseColor =
-                          Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-                              .withOpacity(1.0);
                       return Card(
                         elevation: 5,
                         child: ListTile(

@@ -1,16 +1,45 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../utils/const.dart';
 import '../widgets/custom_clipper.dart';
 import '../widgets/grid_item.dart';
-import '../widgets/progress_vertical.dart';
+import '../models/paciente.dart';
+import '../models/lectura.dart';
 
 class DetailsBPMScreen extends StatefulWidget {
+  final Paciente paciente;
+  final List<Lectura> lecturas;
+
+  DetailsBPMScreen({this.paciente, this.lecturas});
+
   @override
   _DetailsBPMScreenState createState() => _DetailsBPMScreenState();
 }
 
 class _DetailsBPMScreenState extends State<DetailsBPMScreen> {
+  String bpm;
+  Paciente paciente;
+  List<Lectura> lecturas;
+  double promedio;
+
+  @override
+  void initState() {
+    super.initState();
+    bpm = "--";
+    paciente = widget.paciente;
+    lecturas = widget.lecturas;
+    promedio = 0;
+    if (lecturas.isNotEmpty) {
+      bpm = lecturas.last.ritmoCardiaco.toStringAsFixed(2);
+      double acumulador = 0;
+      lecturas.forEach((element) {
+        acumulador += element.ritmoCardiaco;
+      });
+      promedio = acumulador / lecturas.length;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -101,7 +130,7 @@ class _DetailsBPMScreenState extends State<DetailsBPMScreen> {
                               textBaseline: TextBaseline.alphabetic,
                               children: <Widget>[
                                 Text(
-                                  "--",
+                                  bpm,
                                   style: TextStyle(
                                       fontSize: 48,
                                       fontWeight: FontWeight.w900,
@@ -135,108 +164,85 @@ class _DetailsBPMScreenState extends State<DetailsBPMScreen> {
                   type: MaterialType.card,
                   elevation: 10, borderRadius: new BorderRadius.circular(10.0),
                   child: Container(
-                    padding: EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(10.0),
                     height: 300,
-                    child: Column(
-                      children: <Widget>[
-                        // Rest Active Legend
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.all(10.0),
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: Constants.lightGreen,
-                                  shape: BoxShape.circle),
+                    child: lecturas.length >= 5
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 10,
+                              top: 20,
+                              left: 20,
+                              right: 20,
                             ),
-                            Text("Rest"),
-                            Container(
-                              margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: Constants.darkGreen,
-                                  shape: BoxShape.circle),
+                            child: LineChart(
+                              LineChartData(
+                                minX: 0,
+                                maxX: 6,
+                                minY: 60,
+                                maxY: 120,
+                                borderData: FlBorderData(
+                                  show: false,
+                                ),
+                                titlesData: getTitleData(),
+                                gridData: getGridData(),
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    isCurved: true,
+                                    belowBarData: BarAreaData(
+                                      show: true,
+                                      colors: [
+                                        Constants.lightGreen.withOpacity(0.3)
+                                      ],
+                                    ),
+                                    colors: [Constants.darkGreen],
+                                    spots: [
+                                      FlSpot(
+                                        1,
+                                        lecturas[lecturas.length - 5]
+                                            .ritmoCardiaco
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        2,
+                                        lecturas[lecturas.length - 4]
+                                            .ritmoCardiaco
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        3,
+                                        lecturas[lecturas.length - 3]
+                                            .ritmoCardiaco
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        4,
+                                        lecturas[lecturas.length - 2]
+                                            .ritmoCardiaco
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        5,
+                                        lecturas[lecturas.length - 1]
+                                            .ritmoCardiaco
+                                            .toDouble(),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text("Active"),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        // Main Cards - Heartbeat and Blood Pressure
-                        Container(
-                          height: 100,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: <Widget>[
-                              ProgressVertical(
-                                value: 50,
-                                date: "5/11",
-                                isShowDate: true,
+                          )
+                        : Center(
+                            child: Text(
+                              "No hay datos suficientes para hacer el gráfico",
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.black,
                               ),
-                              ProgressVertical(
-                                value: 50,
-                                date: "5/12",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 45,
-                                date: "5/13",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 30,
-                                date: "5/14",
-                                isShowDate: true,
-                              ),
-                              ProgressVertical(
-                                value: 50,
-                                date: "5/15",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 20,
-                                date: "5/16",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 45,
-                                date: "5/17",
-                                isShowDate: true,
-                              ),
-                              ProgressVertical(
-                                value: 67,
-                                date: "5/18",
-                                isShowDate: false,
-                              ),
-                            ],
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        // Line Graph
-                        Expanded(
-                          child: Container(
-                              decoration: new BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                                shape: BoxShape.rectangle,
-                                color: Constants.darkGreen,
-                              ),
-                              child: ClipPath(
-                                clipper: MyCustomClipper(
-                                    clipType: ClipType.multiple),
-                                child: Container(
-                                    decoration: new BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  shape: BoxShape.rectangle,
-                                  color: Constants.lightGreen,
-                                )),
-                              )),
-                        ),
-                      ],
-                    ),
                   ), // added
                 ),
                 SizedBox(height: 30),
@@ -258,7 +264,9 @@ class _DetailsBPMScreenState extends State<DetailsBPMScreen> {
                           return GridItem(
                               status: "BPM Promedio",
                               time: "",
-                              value: "--",
+                              value: promedio != 0
+                                  ? promedio.toInt().toString()
+                                  : '--',
                               unit: "bpm",
                               color: Constants.darkGreen,
                               image: null,
@@ -271,8 +279,12 @@ class _DetailsBPMScreenState extends State<DetailsBPMScreen> {
                             value: "",
                             unit: "",
                             color: Constants.darkOrange,
-                            image: AssetImage("assets/icons/Heart.png"),
-                            remarks: "Sano",
+                            image: lecturas.isNotEmpty
+                                ? lecturas.last.ritmoCardiaco >= 60
+                                    ? AssetImage("assets/icons/Heart.png")
+                                    : AssetImage("assets/icons/Sick.png")
+                                : AssetImage("assets/icons/Unknown.png"),
+                            remarks: "",
                           );
                           break;
                         default:
@@ -297,4 +309,53 @@ class _DetailsBPMScreenState extends State<DetailsBPMScreen> {
       ),
     );
   }
+}
+
+FlGridData getGridData() {
+  return FlGridData(
+    show: true,
+    getDrawingHorizontalLine: (value) {
+      return FlLine(
+        color: Constants.darkGreen,
+        strokeWidth: value % 5 == 0 ? 1 : 0,
+      );
+    },
+    drawVerticalLine: true,
+    getDrawingVerticalLine: (value) {
+      return FlLine(
+        color: Constants.darkGreen,
+        strokeWidth: 1,
+      );
+    },
+  );
+}
+
+FlTitlesData getTitleData() {
+  return FlTitlesData(
+    show: true,
+    bottomTitles: SideTitles(
+      showTitles: true,
+      reservedSize: 22,
+      getTextStyles: (value) => const TextStyle(
+        color: Colors.blueGrey,
+        fontSize: 15,
+      ),
+      getTitles: (value) {
+        return value == 0 || value == 6 ? '' : '${value.toInt()}';
+      },
+      margin: 8,
+    ),
+    leftTitles: SideTitles(
+      showTitles: true,
+      reservedSize: 22,
+      getTextStyles: (value) => TextStyle(
+        color: Colors.blueGrey,
+        fontSize: 15,
+      ),
+      getTitles: (value) {
+        return value % 10 == 0 ? '${value.toInt()}' : '';
+      },
+      margin: 8,
+    ),
+  );
 }

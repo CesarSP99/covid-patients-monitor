@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:monitor/models/lectura.dart';
@@ -5,7 +6,6 @@ import 'package:monitor/models/paciente.dart';
 import '../utils/const.dart';
 import '../widgets/custom_clipper.dart';
 import '../widgets/grid_item.dart';
-import '../widgets/progress_vertical.dart';
 
 class DetailsSpO2Screen extends StatefulWidget {
   final Paciente paciente;
@@ -21,6 +21,7 @@ class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
   String spo2;
   Paciente paciente;
   List<Lectura> lecturas;
+  double promedio;
 
   @override
   void initState() {
@@ -28,8 +29,14 @@ class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
     spo2 = "--";
     paciente = widget.paciente;
     lecturas = widget.lecturas;
+    promedio = 0;
     if (lecturas.isNotEmpty) {
-      spo2 = lecturas.last.ritmoCardiaco.toString();
+      spo2 = lecturas.last.saturacionOxigeno.toString();
+      int acumulador = 0;
+      lecturas.forEach((element) {
+        acumulador += element.saturacionOxigeno;
+      });
+      promedio = acumulador / lecturas.length;
     }
   }
 
@@ -157,108 +164,85 @@ class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
                   type: MaterialType.card,
                   elevation: 10, borderRadius: new BorderRadius.circular(10.0),
                   child: Container(
-                    padding: EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(10.0),
                     height: 300,
-                    child: Column(
-                      children: <Widget>[
-                        // Rest Active Legend
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.all(10.0),
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: Constants.lightYellow,
-                                  shape: BoxShape.circle),
+                    child: lecturas.length >= 5
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 10,
+                              top: 20,
+                              left: 20,
+                              right: 20,
                             ),
-                            Text("Rest"),
-                            Container(
-                              margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: Constants.darkOrange,
-                                  shape: BoxShape.circle),
+                            child: LineChart(
+                              LineChartData(
+                                minX: 0,
+                                maxX: 6,
+                                minY: 70,
+                                maxY: 100,
+                                borderData: FlBorderData(
+                                  show: false,
+                                ),
+                                titlesData: getTitleData(),
+                                gridData: getGridData(),
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    isCurved: true,
+                                    belowBarData: BarAreaData(
+                                      show: true,
+                                      colors: [
+                                        Constants.lightYellow.withOpacity(0.3)
+                                      ],
+                                    ),
+                                    colors: [Constants.darkOrange],
+                                    spots: [
+                                      FlSpot(
+                                        1,
+                                        lecturas[lecturas.length - 5]
+                                            .saturacionOxigeno
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        2,
+                                        lecturas[lecturas.length - 4]
+                                            .saturacionOxigeno
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        3,
+                                        lecturas[lecturas.length - 3]
+                                            .saturacionOxigeno
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        4,
+                                        lecturas[lecturas.length - 2]
+                                            .saturacionOxigeno
+                                            .toDouble(),
+                                      ),
+                                      FlSpot(
+                                        5,
+                                        lecturas[lecturas.length - 1]
+                                            .saturacionOxigeno
+                                            .toDouble(),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text("Active"),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        // Main Cards - Heartbeat and Blood Pressure
-                        Container(
-                          height: 100,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: <Widget>[
-                              ProgressVertical(
-                                value: 50,
-                                date: "5/11",
-                                isShowDate: true,
+                          )
+                        : Center(
+                            child: Text(
+                              "No hay datos suficientes para hacer el gráfico",
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.black,
                               ),
-                              ProgressVertical(
-                                value: 50,
-                                date: "5/12",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 45,
-                                date: "5/13",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 30,
-                                date: "5/14",
-                                isShowDate: true,
-                              ),
-                              ProgressVertical(
-                                value: 50,
-                                date: "5/15",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 20,
-                                date: "5/16",
-                                isShowDate: false,
-                              ),
-                              ProgressVertical(
-                                value: 45,
-                                date: "5/17",
-                                isShowDate: true,
-                              ),
-                              ProgressVertical(
-                                value: 67,
-                                date: "5/18",
-                                isShowDate: false,
-                              ),
-                            ],
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        // Line Graph
-                        Expanded(
-                          child: Container(
-                              decoration: new BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                                shape: BoxShape.rectangle,
-                                color: Constants.darkOrange,
-                              ),
-                              child: ClipPath(
-                                clipper: MyCustomClipper(
-                                    clipType: ClipType.multiple),
-                                child: Container(
-                                    decoration: new BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  shape: BoxShape.rectangle,
-                                  color: Constants.lightYellow,
-                                )),
-                              )),
-                        ),
-                      ],
-                    ),
                   ), // added
                 ),
                 SizedBox(height: 30),
@@ -280,7 +264,9 @@ class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
                           return GridItem(
                               status: "SpO₂ Promedio",
                               time: "",
-                              value: "--",
+                              value: promedio != 0
+                                  ? promedio.toInt().toString()
+                                  : '--',
                               unit: "%",
                               color: Constants.darkOrange,
                               image: null,
@@ -288,13 +274,17 @@ class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
                           break;
                         case 1:
                           return GridItem(
-                            status: "Fitness Level",
+                            status: "Prediagnóstico",
                             time: "",
                             value: "",
                             unit: "",
                             color: Constants.darkOrange,
-                            image: AssetImage("assets/icons/Heart.png"),
-                            remarks: "Fit",
+                            image: lecturas.isNotEmpty
+                                ? lecturas.last.saturacionOxigeno >= 90
+                                    ? AssetImage("assets/icons/Heart.png")
+                                    : AssetImage("assets/icons/Sick.png")
+                                : AssetImage("assets/icons/Unknown.png"),
+                            remarks: "",
                           );
                           break;
                         default:
@@ -319,4 +309,53 @@ class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
       ),
     );
   }
+}
+
+FlGridData getGridData() {
+  return FlGridData(
+    show: true,
+    getDrawingHorizontalLine: (value) {
+      return FlLine(
+        color: Constants.darkOrange,
+        strokeWidth: value % 5 == 0 ? 1 : 0,
+      );
+    },
+    drawVerticalLine: true,
+    getDrawingVerticalLine: (value) {
+      return FlLine(
+        color: Constants.darkOrange,
+        strokeWidth: 1,
+      );
+    },
+  );
+}
+
+FlTitlesData getTitleData() {
+  return FlTitlesData(
+    show: true,
+    bottomTitles: SideTitles(
+      showTitles: true,
+      reservedSize: 22,
+      getTextStyles: (value) => const TextStyle(
+        color: Colors.blueGrey,
+        fontSize: 15,
+      ),
+      getTitles: (value) {
+        return value == 0 || value == 6 ? '' : '${value.toInt()}';
+      },
+      margin: 8,
+    ),
+    leftTitles: SideTitles(
+      showTitles: true,
+      reservedSize: 22,
+      getTextStyles: (value) => TextStyle(
+        color: Colors.blueGrey,
+        fontSize: value == 100 ? 12 : 15,
+      ),
+      getTitles: (value) {
+        return value % 5 == 0 ? '${value.toInt()}%' : '';
+      },
+      margin: 8,
+    ),
+  );
 }

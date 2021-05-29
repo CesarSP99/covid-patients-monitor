@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: Constants.appName,
       theme: Constants.lighTheme(context),
+      debugShowCheckedModeBanner: false,
       home: PatientSelector(),
     );
   }

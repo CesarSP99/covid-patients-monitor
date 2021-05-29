@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:monitor/models/lectura.dart';
 import 'package:monitor/widgets/card_personal_data.dart';
 import '../models/paciente.dart';
 import 'detail_bpm.dart';
@@ -7,6 +8,7 @@ import 'details_oxygen.dart';
 import '../utils/const.dart';
 import '../widgets/card_main.dart';
 import '../widgets/custom_clipper.dart';
+import 'package:http/http.dart' as http;
 
 class DatosDelPaciente extends StatefulWidget {
   final Paciente paciente;
@@ -20,6 +22,7 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
   Paciente paciente;
   String bpm;
   String spo2;
+  List<Lectura> lecturas;
 
   @override
   void initState() {
@@ -31,7 +34,16 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
   }
 
   Future<void> cargarLecturas() async {
-    //TODO: Llamar a la API que devuelva la lista de Lecturas del paciente y asignar los valores correspondientes
+    Uri uri = Uri.http(
+        '52.152.220.15:8080', '/api/Lecturas/${paciente.idPaciente}', {});
+    var response = await http.get(uri);
+    setState(() {
+      lecturas = lecturasFromJson(response.body);
+      if (lecturas.isNotEmpty) {
+        bpm = lecturas.last.ritmoCardiaco.toStringAsFixed(2);
+        spo2 = lecturas.last.saturacionOxigeno.toString();
+      }
+    });
   }
 
   @override
@@ -100,7 +112,10 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                         value: bpm,
                         unit: "bpm",
                         color: Constants.lightGreen,
-                        detailsScreen: DetailsBPMScreen(),
+                        detailsScreen: DetailsBPMScreen(
+                          paciente: paciente,
+                          lecturas: lecturas,
+                        ),
                       ),
                       CardMain(
                         image: AssetImage('assets/icons/blooddrop.png'),
@@ -108,7 +123,10 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
                         value: spo2,
                         unit: "%",
                         color: Constants.lightYellow,
-                        detailsScreen: DetailsSpO2Screen(),
+                        detailsScreen: DetailsSpO2Screen(
+                          paciente: paciente,
+                          lecturas: lecturas,
+                        ),
                       )
                     ],
                   ),

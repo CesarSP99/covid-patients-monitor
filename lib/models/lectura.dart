@@ -18,7 +18,7 @@ class Lectura {
 
   int idLectura;
   int idPaciente;
-  int ritmoCardiaco;
+  double ritmoCardiaco;
   int saturacionOxigeno;
   DateTime fechaMedicion;
   dynamic idPacienteNavigation;
@@ -26,7 +26,7 @@ class Lectura {
   factory Lectura.fromJson(Map<String, dynamic> json) => Lectura(
         idLectura: json["idLectura"],
         idPaciente: json["idPaciente"],
-        ritmoCardiaco: json["ritmoCardiaco"],
+        ritmoCardiaco: json["ritmoCardiaco"].toDouble(),
         saturacionOxigeno: json["saturacionOxigeno"],
         fechaMedicion: DateTime.parse(json["fechaMedicion"]),
         idPacienteNavigation: json["idPacienteNavigation"],
