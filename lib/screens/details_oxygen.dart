@@ -1,16 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:monitor/models/lectura.dart';
+import 'package:monitor/models/paciente.dart';
 import '../utils/const.dart';
 import '../widgets/custom_clipper.dart';
 import '../widgets/grid_item.dart';
 import '../widgets/progress_vertical.dart';
 
 class DetailsSpO2Screen extends StatefulWidget {
+  final Paciente paciente;
+  final List<Lectura> lecturas;
+
+  DetailsSpO2Screen({this.paciente, this.lecturas});
+
   @override
   _DetailsSpO2ScreenState createState() => _DetailsSpO2ScreenState();
 }
 
 class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
+  String spo2;
+  Paciente paciente;
+  List<Lectura> lecturas;
+
+  @override
+  void initState() {
+    super.initState();
+    spo2 = "--";
+    paciente = widget.paciente;
+    lecturas = widget.lecturas;
+    if (lecturas.isNotEmpty) {
+      spo2 = lecturas.last.ritmoCardiaco.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -101,7 +123,7 @@ class _DetailsSpO2ScreenState extends State<DetailsSpO2Screen> {
                               textBaseline: TextBaseline.alphabetic,
                               children: <Widget>[
                                 Text(
-                                  "--",
+                                  spo2,
                                   style: TextStyle(
                                       fontSize: 48,
                                       fontWeight: FontWeight.w900,
