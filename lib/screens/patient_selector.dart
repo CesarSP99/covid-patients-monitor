@@ -5,6 +5,7 @@ import 'package:monitor/screens/patient_data.dart';
 import '../utils/const.dart';
 import '../widgets/custom_clipper.dart';
 import 'dart:math' as math;
+import 'package:http/http.dart' as http;
 
 class PatientSelector extends StatefulWidget {
   @override
@@ -17,42 +18,15 @@ class _PatientSelectorState extends State<PatientSelector> {
   @override
   void initState() {
     super.initState();
+    listaDePacientes = [];
     cargarPacientes();
   }
 
   Future<void> cargarPacientes() async {
-    //TODO: Cargar los pacientes
+    Uri uri = Uri.http('52.152.220.15:8080', '/api/Pacientes', {});
+    var response = await http.get(uri);
     setState(() {
-      listaDePacientes = [
-        Paciente(
-          nombre: 'Laura',
-          apellidoPat: 'Martínez',
-          apellidoMat: 'Klein',
-          telefono: "7777777",
-          direccion: "Santa Cruz",
-        ),
-        Paciente(
-          nombre: 'Sebastian',
-          apellidoPat: 'Morales',
-          apellidoMat: 'Yabeta',
-          telefono: "7777777",
-          direccion: "Santa Cruz",
-        ),
-        Paciente(
-          nombre: 'Cesar',
-          apellidoPat: 'Salazar',
-          apellidoMat: 'Pereira',
-          telefono: "7777777",
-          direccion: "Santa Cruz",
-        ),
-        Paciente(
-          nombre: 'Diego',
-          apellidoPat: 'Vaca',
-          apellidoMat: 'Safar',
-          telefono: "7777777",
-          direccion: "Santa Cruz",
-        ),
-      ];
+      listaDePacientes = pacienteFromJson(response.body);
     });
   }
 
