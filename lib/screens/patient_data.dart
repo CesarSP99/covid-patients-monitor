@@ -34,8 +34,8 @@ class _DatosDelPacienteState extends State<DatosDelPaciente> {
   }
 
   Future<void> cargarLecturas() async {
-    Uri uri = Uri.http(
-        '52.152.220.15:8080', '/api/Lecturas/${paciente.idPaciente}', {});
+    Uri uri =
+        Uri.http(Constants.uri, '/api/Lecturas/${paciente.idPaciente}', {});
     var response = await http.get(uri);
     setState(() {
       lecturas = lecturasFromJson(response.body);

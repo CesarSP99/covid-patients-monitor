@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class Constants {
   // Name
   static String appName = "Monitor";
-
+  static String uri = "patientcarecontrol.fsocietybo.com";
   // Material Design Color
   static Color lightPrimary = Color(0xfffcfcff);
   static Color lightAccent = Color(0xFF3B72FF);

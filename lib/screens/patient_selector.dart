@@ -22,7 +22,7 @@ class _PatientSelectorState extends State<PatientSelector> {
   }
 
   Future<void> cargarPacientes() async {
-    Uri uri = Uri.http('52.152.220.15:8080', '/api/Pacientes', {});
+    Uri uri = Uri.http(Constants.uri, '/api/Pacientes', {});
     var response = await http.get(uri);
     setState(() {
       listaDePacientes = pacienteFromJson(response.body);
