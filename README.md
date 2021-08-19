@@ -1,16 +1,11 @@
-# monitor
+# COVID Patients Monitor
 
-A new Flutter project.
+A Flutter project that helps doctor in monitoring vitals remotely
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## How does it work?
 
-A few resources to get you started if this is your first Flutter project:
+The project consists in two parts:
+- The Flutter app for the doctors that gets all info from a remote database (in this case, stored in Azure).
+- The Arduino sketch for ESP32/ESP8266 Boards that reports the vitals from each patient as each one of them is assigned a unique ID.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
